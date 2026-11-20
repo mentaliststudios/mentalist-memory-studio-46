@@ -28,3 +28,13 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- App shell lives in `src/components/layout/AppShell.tsx`, wrapped around `<Outlet />` in `__root.tsx`; pages never render their own nav — keeps one sidebar/bottom-nav source.
+- Primary nav items come only from `src/config/navigation.ts`; sidebar (md rail, lg full) and mobile bottom nav both read it — add a section there plus its route file.
+- `/` redirects to `/dashboard` in `src/routes/index.tsx` `beforeLoad` — the Dashboard is the canonical home URL.
+- Static content (techniques, training categories, palace rooms, assistant prompts) lives in `src/config/*.ts` so it can later be swapped for backend data without touching page layout.
+- Shared UI building blocks live in `src/components/common/`; section accent colors go through `src/lib/accents.ts` — keeps accent usage consistent and Tailwind-visible.
+- All colors, radii, shadows and fonts are tokens in `src/styles.css` (`panel`, `bg-hero`, `bg-dots` utilities included); components use semantic classes only.
+- Metrics render through empty placeholders (`StatPlaceholder`, `ProgressIndicator value={null}`) until real data exists — never hardcode numbers.
