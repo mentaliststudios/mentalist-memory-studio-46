@@ -15,7 +15,7 @@ import {
 import { accentStyles } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/training")({
+export const Route = createFileRoute("/_authenticated/training")({
   head: () => ({
     meta: [
       { title: "Memory Training — Mentalist" },

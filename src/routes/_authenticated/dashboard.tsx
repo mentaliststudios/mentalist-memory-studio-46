@@ -23,7 +23,7 @@ import type { NavigationPath } from "@/config/navigation";
 import { accentStyles, type Accent } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — Mentalist" },

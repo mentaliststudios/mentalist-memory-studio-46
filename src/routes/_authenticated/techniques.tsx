@@ -13,7 +13,7 @@ import { techniques, type Technique, type TechniqueGroup } from "@/config/techni
 import { accentStyles } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/techniques")({
+export const Route = createFileRoute("/_authenticated/techniques")({
   head: () => ({
     meta: [
       { title: "Memory Techniques — Mentalist" },

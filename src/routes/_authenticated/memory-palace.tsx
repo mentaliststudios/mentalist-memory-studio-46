@@ -12,7 +12,7 @@ import { futurePalaceTemplates, palaceEnvironments } from "@/config/palace";
 import { accentStyles, type Accent } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/memory-palace")({
+export const Route = createFileRoute("/_authenticated/memory-palace")({
   head: () => ({
     meta: [
       { title: "Memory Palace — Mentalist" },

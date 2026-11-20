@@ -10,7 +10,7 @@ import { suggestedPrompts } from "@/config/assistant";
 import { accentStyles } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/assistant")({
+export const Route = createFileRoute("/_authenticated/assistant")({
   head: () => ({
     meta: [
       { title: "AI Memory Assistant — Mentalist" },

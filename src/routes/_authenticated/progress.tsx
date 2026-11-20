@@ -24,7 +24,7 @@ import { trainingCategories } from "@/config/training";
 import { accentStyles, type Accent } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/progress")({
+export const Route = createFileRoute("/_authenticated/progress")({
   head: () => ({
     meta: [
       { title: "Progress — Mentalist" },

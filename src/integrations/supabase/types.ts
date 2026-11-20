@@ -432,7 +432,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      ensure_my_profile: { Args: never; Returns: undefined }
+      profile_display_name_from_metadata: {
+        Args: { meta: Json }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
