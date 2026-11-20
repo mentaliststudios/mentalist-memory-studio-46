@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1795198889391,
+      "tag": "0000_mentalist_core_schema",
+      "breakpoints": true
+    }
+  ]
 }
