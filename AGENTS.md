@@ -38,3 +38,6 @@ use the editor.
 - Shared UI building blocks live in `src/components/common/`; section accent colors go through `src/lib/accents.ts` — keeps accent usage consistent and Tailwind-visible.
 - All colors, radii, shadows and fonts are tokens in `src/styles.css` (`panel`, `bg-hero`, `bg-dots` utilities included); components use semantic classes only.
 - Metrics render through empty placeholders (`StatPlaceholder`, `ProgressIndicator value={null}`) until real data exists — never hardcode numbers.
+- User-owned tables reference `public.profiles(id)` for `user_id` (profiles cascades from `auth.users`), never `auth.users` directly — Lovable Cloud schema rule; account deletion still cascades.
+- Child tables reference parents through composite `(parent_id, user_id)` FKs onto `UNIQUE (id, user_id)` — the database, not the UI, prevents linking to another user's rows. Keep this pattern for new user-owned tables.
+- Schema changes go through new migrations in `drizzle/migrations/`; the shared `public.set_updated_at()` trigger function is reused for every `updated_at` column.
