@@ -5,6 +5,7 @@ export const AUTH_MESSAGES = {
   emailNotConfirmed: "Please confirm your email first — open the link we sent to your inbox.",
   weakPassword: "That password is too easy to guess. Try a longer, less common one.",
   samePassword: "Your new password must be different from your current one.",
+  invalidEmail: "That email address can't be used. Check it for typos.",
   rateLimited: "Too many attempts. Please wait a minute and try again.",
   network: "We couldn't reach Mentalist. Check your connection and try again.",
   signupDisabled: "New sign-ups are closed right now.",
@@ -47,6 +48,8 @@ export function friendlyAuthError(error: unknown): string {
       return AUTH_MESSAGES.weakPassword;
     case "same_password":
       return AUTH_MESSAGES.samePassword;
+    case "email_address_invalid":
+      return AUTH_MESSAGES.invalidEmail;
     case "over_request_rate_limit":
     case "over_email_send_rate_limit":
       return AUTH_MESSAGES.rateLimited;
@@ -55,6 +58,9 @@ export function friendlyAuthError(error: unknown): string {
       return AUTH_MESSAGES.signupDisabled;
   }
   if (e.status === 429) return AUTH_MESSAGES.rateLimited;
+  if (/email address is not allowed|email address .* is invalid/i.test(e.message ?? "")) {
+    return AUTH_MESSAGES.invalidEmail;
+  }
   if (e.status === 400 && /invalid login credentials/i.test(e.message ?? "")) {
     return AUTH_MESSAGES.invalidCredentials;
   }

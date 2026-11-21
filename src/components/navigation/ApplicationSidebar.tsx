@@ -1,6 +1,7 @@
 import { Lightbulb } from "lucide-react";
 
 import { primaryNavigation } from "@/config/navigation";
+import { AccountMenu } from "./AccountMenu";
 import { BrandMark } from "./BrandMark";
 import { NavigationItem } from "./NavigationItem";
 
@@ -32,6 +33,10 @@ export function ApplicationSidebar() {
         <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
           The stranger the image, the stronger the memory. Exaggerate, animate, make it funny.
         </p>
+      </div>
+
+      <div className="mt-4 border-t border-sidebar-border pt-4">
+        <AccountMenu variant="sidebar" />
       </div>
     </aside>
   );

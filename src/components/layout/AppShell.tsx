@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { ApplicationSidebar } from "@/components/navigation/ApplicationSidebar";
 import { BrandMark } from "@/components/navigation/BrandMark";
+import { AccountMenu } from "@/components/navigation/AccountMenu";
 import { MobileBottomNavigation } from "@/components/navigation/MobileBottomNavigation";
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -19,6 +20,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-14 items-center border-b border-border bg-background/90 px-4 backdrop-blur-md md:hidden">
           <BrandMark />
+          <div className="ml-auto">
+            <AccountMenu variant="header" />
+          </div>
         </header>
 
         <main id="main-content" tabIndex={-1} className="flex-1 pb-safe-nav outline-none md:pb-12">
