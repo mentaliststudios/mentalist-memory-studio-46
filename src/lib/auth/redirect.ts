@@ -13,7 +13,8 @@ export function safeRedirectPath(value: unknown): string {
   if (!path.startsWith("/") || path.startsWith("//") || path.startsWith("/\\")) {
     return DEFAULT_AFTER_LOGIN;
   }
-  if (/[\u0000-\u001f\\]/.test(path)) return DEFAULT_AFTER_LOGIN;
+  // Reject control characters and backslashes anywhere in the path.
+  if ([...path].some((ch) => ch.charCodeAt(0) < 32 || ch === "\\")) return DEFAULT_AFTER_LOGIN;
   const pathname = path.split(/[?#]/)[0] ?? "";
   if (AUTH_ONLY_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     return DEFAULT_AFTER_LOGIN;

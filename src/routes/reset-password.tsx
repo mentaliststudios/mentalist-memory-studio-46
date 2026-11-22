@@ -13,7 +13,11 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { friendlyAuthError } from "@/lib/auth/errors";
-import { PASSWORD_MIN_LENGTH, resetPasswordSchema, type ResetPasswordValues } from "@/lib/auth/validation";
+import {
+  PASSWORD_MIN_LENGTH,
+  resetPasswordSchema,
+  type ResetPasswordValues,
+} from "@/lib/auth/validation";
 
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
@@ -36,7 +40,10 @@ function ResetPasswordPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordValues>({ resolver: zodResolver(resetPasswordSchema), mode: "onTouched" });
+  } = useForm<ResetPasswordValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    mode: "onTouched",
+  });
 
   // Read the recovery link details before the auth client clears them from the address bar.
   useEffect(() => {

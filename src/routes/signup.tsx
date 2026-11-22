@@ -79,8 +79,9 @@ function SignupPage() {
         title="Check your inbox"
         description={
           <>
-            If <strong className="font-bold text-foreground">{sentTo}</strong> can be used for a new account,
-            a confirmation link is on its way. Open it to activate your account, then sign in.
+            If <strong className="font-bold text-foreground">{sentTo}</strong> can be used for a new
+            account, a confirmation link is on its way. Open it to activate your account, then sign
+            in.
           </>
         }
         footer={

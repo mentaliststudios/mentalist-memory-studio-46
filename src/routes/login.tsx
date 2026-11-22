@@ -26,7 +26,10 @@ export const Route = createFileRoute("/login")({
       { title: "Sign in — Mentalist" },
       { name: "description", content: "Sign in to Mentalist and continue training your memory." },
       { property: "og:title", content: "Sign in — Mentalist" },
-      { property: "og:description", content: "Continue building Memory Palaces and training your memory." },
+      {
+        property: "og:description",
+        content: "Continue building Memory Palaces and training your memory.",
+      },
     ],
   }),
   component: LoginPage,
@@ -90,7 +93,10 @@ function LoginPage() {
           autoComplete="current-password"
           error={errors.password?.message}
           labelAside={
-            <Link to="/forgot-password" className="text-[13px] font-bold text-primary hover:underline">
+            <Link
+              to="/forgot-password"
+              className="text-[13px] font-bold text-primary hover:underline"
+            >
               Forgot password?
             </Link>
           }

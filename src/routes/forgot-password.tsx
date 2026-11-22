@@ -31,7 +31,10 @@ function ForgotPasswordPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ForgotPasswordValues>({ resolver: zodResolver(forgotPasswordSchema), mode: "onTouched" });
+  } = useForm<ForgotPasswordValues>({
+    resolver: zodResolver(forgotPasswordSchema),
+    mode: "onTouched",
+  });
 
   const onSubmit = handleSubmit(async ({ email }) => {
     setFormError(null);
@@ -65,14 +68,16 @@ function ForgotPasswordPage() {
         title="Request received"
         description={
           <>
-            If an account exists for <strong className="font-bold text-foreground">{requestedFor}</strong>,
-            you'll get an email with a link to choose a new password.
+            If an account exists for{" "}
+            <strong className="font-bold text-foreground">{requestedFor}</strong>, you'll get an
+            email with a link to choose a new password.
           </>
         }
         footer={footer}
       >
         <FormAlert tone="success">
-          The link expires after a while, so use it soon. Check your spam folder if it doesn't arrive.
+          The link expires after a while, so use it soon. Check your spam folder if it doesn't
+          arrive.
         </FormAlert>
         <Button variant="outline" className="mt-5 w-full" onClick={() => setRequestedFor(null)}>
           Try another email

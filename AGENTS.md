@@ -31,9 +31,13 @@ use the editor.
 
 ## Project rules
 
-- App shell lives in `src/components/layout/AppShell.tsx`, wrapped around `<Outlet />` in `__root.tsx`; pages never render their own nav — keeps one sidebar/bottom-nav source.
+- App shell lives in `src/components/layout/AppShell.tsx`, rendered by the `src/routes/_authenticated/route.tsx` layout; pages never render their own nav and auth pages render without it — keeps one sidebar/bottom-nav source.
 - Primary nav items come only from `src/config/navigation.ts`; sidebar (md rail, lg full) and mobile bottom nav both read it — add a section there plus its route file.
 - `/` redirects to `/dashboard` in `src/routes/index.tsx` `beforeLoad` — the Dashboard is the canonical home URL.
+- App sections live under `src/routes/_authenticated/` (client-only gate, redirects to `/login?redirect=…`); auth pages (`/login`, `/signup`, `/forgot-password`, `/reset-password`) are top-level — database row security stays the real protection.
+- Auth state comes from the single `AuthProvider` (`src/lib/auth/`) in `__root.tsx`; no other `onAuthStateChange` listeners. Post-login targets always pass through `safeRedirectPath` — blocks open redirects and login loops.
+- Profiles are created by the `on_auth_user_created` trigger; `ensure_my_profile()` reconciles missing ones on sign-in. Users never insert profiles directly — no client-trusted profile IDs.
+- Auth errors shown to users go through `friendlyAuthError`; signup and password-reset responses stay identical for registered and unregistered emails — prevents account enumeration.
 - Static content (techniques, training categories, palace rooms, assistant prompts) lives in `src/config/*.ts` so it can later be swapped for backend data without touching page layout.
 - Shared UI building blocks live in `src/components/common/`; section accent colors go through `src/lib/accents.ts` — keeps accent usage consistent and Tailwind-visible.
 - All colors, radii, shadows and fonts are tokens in `src/styles.css` (`panel`, `bg-hero`, `bg-dots` utilities included); components use semantic classes only.

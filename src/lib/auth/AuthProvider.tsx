@@ -1,7 +1,16 @@
 import type { Session, User } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouter } from "@tanstack/react-router";
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { clearVerifiedUser } from "./session";

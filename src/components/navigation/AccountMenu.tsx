@@ -62,10 +62,15 @@ export function AccountMenu({ variant }: AccountMenuProps) {
         {variant === "sidebar" ? (
           <>
             <span className="hidden min-w-0 flex-1 lg:block">
-              <span className="block truncate text-sm font-bold text-foreground">{name ?? "Your account"}</span>
+              <span className="block truncate text-sm font-bold text-foreground">
+                {name ?? "Your account"}
+              </span>
               <span className="block truncate text-xs text-muted-foreground">{email}</span>
             </span>
-            <ChevronsUpDown className="hidden size-4 text-muted-foreground lg:block" aria-hidden="true" />
+            <ChevronsUpDown
+              className="hidden size-4 text-muted-foreground lg:block"
+              aria-hidden="true"
+            />
           </>
         ) : null}
       </DropdownMenuTrigger>
@@ -75,7 +80,9 @@ export function AccountMenu({ variant }: AccountMenuProps) {
         className="w-60 rounded-xl"
       >
         <DropdownMenuLabel className="font-normal">
-          <span className="block truncate text-sm font-bold text-foreground">{name ?? "Your account"}</span>
+          <span className="block truncate text-sm font-bold text-foreground">
+            {name ?? "Your account"}
+          </span>
           <span className="block truncate text-xs text-muted-foreground">{email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

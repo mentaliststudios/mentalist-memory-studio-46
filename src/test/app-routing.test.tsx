@@ -29,7 +29,14 @@ function makeRouter(initial = "/") {
   });
 }
 
-const protectedPaths = ["/dashboard", "/memory-palace", "/techniques", "/training", "/assistant", "/progress"];
+const protectedPaths = [
+  "/dashboard",
+  "/memory-palace",
+  "/techniques",
+  "/training",
+  "/assistant",
+  "/progress",
+];
 
 // Match routes without rendering: jsdom never loads the stylesheets React waits on.
 describe("App routing", () => {
@@ -48,17 +55,23 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).toBe(`/_authenticated${path}`);
   });
 
-  it.each(["/login", "/signup", "/forgot-password", "/reset-password"])("has a public page for %s", (path) => {
-    const matches = makeRouter().matchRoutes(path);
-    expect(matches.at(-1)?.routeId).toBe(path);
-  });
+  it.each(["/login", "/signup", "/forgot-password", "/reset-password"])(
+    "has a public page for %s",
+    (path) => {
+      const matches = makeRouter().matchRoutes(path);
+      expect(matches.at(-1)?.routeId).toBe(path);
+    },
+  );
 
-  it.each(protectedPaths)("sends signed-out visitors from %s to /login and remembers the page", async (path) => {
-    const router = makeRouter(path);
-    await router.load();
-    expect(router.state.location.pathname).toBe("/login");
-    expect(router.state.location.search).toEqual({ redirect: path });
-  });
+  it.each(protectedPaths)(
+    "sends signed-out visitors from %s to /login and remembers the page",
+    async (path) => {
+      const router = makeRouter(path);
+      await router.load();
+      expect(router.state.location.pathname).toBe("/login");
+      expect(router.state.location.search).toEqual({ redirect: path });
+    },
+  );
 
   it("sends signed-out visitors from / to /login with /dashboard as the destination", async () => {
     const router = makeRouter("/");

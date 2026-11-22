@@ -21,7 +21,9 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(function A
   const id = useId();
   const [visible, setVisible] = useState(false);
   const isPassword = type === "password";
-  const describedBy = [error ? `${id}-error` : null, hint ? `${id}-hint` : null].filter(Boolean).join(" ");
+  const describedBy = [error ? `${id}-error` : null, hint ? `${id}-hint` : null]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -49,7 +51,11 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(function A
             aria-pressed={visible}
             className="absolute inset-y-0 right-1 my-auto grid size-10 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
           >
-            {visible ? <EyeOff className="size-5" aria-hidden="true" /> : <Eye className="size-5" aria-hidden="true" />}
+            {visible ? (
+              <EyeOff className="size-5" aria-hidden="true" />
+            ) : (
+              <Eye className="size-5" aria-hidden="true" />
+            )}
           </button>
         ) : null}
       </div>
