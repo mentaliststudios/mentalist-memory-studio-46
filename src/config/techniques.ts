@@ -33,7 +33,7 @@ export const techniques: Technique[] = [
     description:
       "Place vivid images along a route through a place you know well, then walk it again in your mind to recall everything in order.",
     icon: Castle,
-    accent: "violet",
+    accent: "brand",
     group: "foundations",
     level: "Beginner",
   },
@@ -75,7 +75,7 @@ export const techniques: Technique[] = [
     name: "Acronyms",
     description: "Compress a list into one memorable word built from the first letters.",
     icon: Type,
-    accent: "violet",
+    accent: "brand",
     group: "words",
     level: "Beginner",
     example: { cue: "ROY G BIV", meaning: "Red, Orange, Yellow, Green, Blue, Indigo, Violet" },

@@ -44,10 +44,10 @@ export const Route = createFileRoute("/_authenticated/progress")({
 });
 
 const WEEKS = 12;
-const legendShades = ["bg-surface-2", "bg-lavender", "bg-primary-glow", "bg-primary"];
+const legendShades = ["bg-surface-2", "bg-rose", "bg-primary-glow", "bg-primary"];
 
 const milestones: { title: string; icon: typeof Star; accent: Accent }[] = [
-  { title: "First session", icon: Star, accent: "violet" },
+  { title: "First session", icon: Star, accent: "brand" },
   { title: "First palace", icon: Castle, accent: "mint" },
   { title: "3-day streak", icon: Flame, accent: "sun" },
   { title: "Technique explorer", icon: Medal, accent: "blush" },
@@ -79,7 +79,7 @@ function ProgressPage() {
             icon={Play}
             label="Training sessions"
             hint="Counted when you finish a session"
-            accent="violet"
+            accent="brand"
           />
           <StatPlaceholder
             icon={Clock}

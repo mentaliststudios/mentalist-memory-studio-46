@@ -16,7 +16,7 @@ interface IllustrationContainerProps {
 export function IllustrationContainer({
   src,
   alt = "",
-  accent = "violet",
+  accent = "brand",
   className,
   imageClassName,
   children,

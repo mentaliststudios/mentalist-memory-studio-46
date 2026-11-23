@@ -19,7 +19,7 @@ export function PageHeader({
   title,
   description,
   icon: Icon,
-  accent = "violet",
+  accent = "brand",
   actions,
   className,
 }: PageHeaderProps) {

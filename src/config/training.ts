@@ -20,7 +20,7 @@ export const trainingCategories: TrainingCategory[] = [
     description: "Remember positions, colors and shapes after a quick glance.",
     skills: ["Spatial recall", "Attention to detail"],
     icon: Eye,
-    accent: "violet",
+    accent: "brand",
   },
   {
     id: "sequence",

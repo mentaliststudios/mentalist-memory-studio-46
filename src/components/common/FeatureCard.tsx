@@ -21,7 +21,7 @@ export function FeatureCard({
   icon: Icon,
   title,
   description,
-  accent = "violet",
+  accent = "brand",
   badge,
   children,
   footer,

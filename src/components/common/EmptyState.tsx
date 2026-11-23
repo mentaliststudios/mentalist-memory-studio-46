@@ -19,7 +19,7 @@ export function EmptyState({
   title,
   description,
   action,
-  accent = "violet",
+  accent = "brand",
   compact = false,
   className,
 }: EmptyStateProps) {

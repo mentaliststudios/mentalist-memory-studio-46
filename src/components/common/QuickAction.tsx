@@ -18,7 +18,7 @@ export function QuickAction({
   icon: Icon,
   title,
   description,
-  accent = "violet",
+  accent = "brand",
 }: QuickActionProps) {
   return (
     <Link

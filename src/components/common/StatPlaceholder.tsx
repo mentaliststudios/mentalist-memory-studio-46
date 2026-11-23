@@ -16,7 +16,7 @@ export function StatPlaceholder({
   icon: Icon,
   label,
   hint,
-  accent = "violet",
+  accent = "brand",
   className,
 }: StatPlaceholderProps) {
   return (

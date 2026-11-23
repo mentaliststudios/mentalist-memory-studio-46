@@ -7,7 +7,7 @@ export function BrandGlyph({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "relative grid size-10 shrink-0 place-items-center rounded-xl bg-primary shadow-press",
+        "relative grid size-10 shrink-0 place-items-center rounded-xl bg-brand shadow-soft",
         className,
       )}
       aria-hidden="true"

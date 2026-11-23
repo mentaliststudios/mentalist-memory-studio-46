@@ -19,7 +19,7 @@ export const palaceEnvironments: PalaceEnvironment[] = [
     name: "Bedroom",
     greatFor: "Your very first palace — you know every corner.",
     image: bedroom,
-    accent: "violet",
+    accent: "brand",
   },
   {
     id: "living-room",
@@ -47,7 +47,7 @@ export const palaceEnvironments: PalaceEnvironment[] = [
     name: "Hallway",
     greatFor: "Long sequences — each door becomes a new room.",
     image: hallway,
-    accent: "violet",
+    accent: "brand",
   },
 ];
 

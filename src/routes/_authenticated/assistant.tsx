@@ -92,7 +92,7 @@ function AssistantPage() {
               <button
                 type="button"
                 onClick={() => applyPrompt(p.text)}
-                className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-3 text-left text-sm font-semibold text-foreground transition-all hover:-translate-y-0.5 hover:border-lavender hover:bg-card hover:shadow-card"
+                className="group flex w-full items-center gap-3 rounded-xl border border-border bg-background p-3 text-left text-sm font-semibold text-foreground transition-all hover:-translate-y-0.5 hover:border-rose hover:bg-card hover:shadow-card"
               >
                 <span
                   className={cn(

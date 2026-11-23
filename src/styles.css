@@ -10,13 +10,14 @@
 
 /*
  * MENTALIST design system — Clean + Playful + Premium + Gamified.
- * Light-first. Violet carries the brand; mint, sun (yellow) and blush (pink)
- * are occasional accents. All colors are oklch tokens.
+ * Light-first, white-dominant. Crimson carries the brand, Vibrant Red marks
+ * key actions; mint, sun (yellow) and blush (pink) stay occasional accents.
+ * All colors are oklch tokens.
  */
 
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --radius-sm: calc(var(--radius) - 8px);
   --radius-md: calc(var(--radius) - 4px);
@@ -36,6 +37,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-deep: var(--primary-deep);
   --color-primary-glow: var(--primary-glow);
+  --color-brand: var(--brand);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -52,7 +54,7 @@
 
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
-  --color-lavender: var(--lavender);
+  --color-rose: var(--rose);
   --color-mint: var(--mint);
   --color-mint-foreground: var(--mint-foreground);
   --color-sun: var(--sun);
@@ -90,19 +92,20 @@
   --radius: 0.75rem;
 
   /* Brand palette */
-  --background: oklch(0.979 0.011 292); /* #F8F7FF */
-  --surface: oklch(1 0 0); /* #FFFFFF */
-  --surface-2: oklch(0.954 0.024 296.1); /* #F1EDFF */
-  --lavender: oklch(0.919 0.046 300.7); /* #E9DEFF */
-  --foreground: oklch(0.267 0.046 294.1); /* #27213A */
-  --muted-foreground: oklch(0.53 0.035 293.2); /* ~#77738A, nudged for AA contrast */
-  --border: oklch(0.932 0.017 301.2); /* #EAE6F2 */
-  --border-strong: oklch(0.88 0.03 298);
+  --background: oklch(0.984 0.004 56.4); /* white warmed toward Warm Ivory, ~#FCF9F7 */
+  --surface: oklch(1 0 0); /* Pure White #FFFFFF */
+  --surface-2: oklch(0.967 0.008 61.5); /* Warm Ivory #F8F3EF */
+  --rose: oklch(0.932 0.011 31.1); /* Soft Rose #F0E6E4 */
+  --foreground: oklch(0.27 0.01 312.1); /* Charcoal #28252A */
+  --muted-foreground: oklch(0.52 0.015 321.9); /* Muted Gray ~#777078, nudged for AA contrast on ivory */
+  --border: oklch(0.93 0.01 41.9); /* ~#EEE6E3 */
+  --border-strong: oklch(0.867 0.016 37.9); /* ~#DDD0CC */
 
-  --primary: oklch(0.575 0.211 291.9); /* #8055E8 */
+  --brand: oklch(0.48 0.172 20.1); /* Mentalist Crimson #A91F32 */
+  --primary: oklch(0.567 0.189 19.9); /* Vibrant Red #CE3546 — key actions */
   --primary-foreground: oklch(1 0 0);
-  --primary-deep: oklch(0.47 0.2 291.5);
-  --primary-glow: oklch(0.709 0.159 293.5); /* #A78BFA */
+  --primary-deep: oklch(0.48 0.172 20.1); /* Crimson, used for pressed edges */
+  --primary-glow: oklch(0.681 0.142 15); /* light red ~#E2707C */
 
   --mint: oklch(0.911 0.06 165.3); /* #BDEFD8 */
   --mint-foreground: oklch(0.42 0.08 165);
@@ -119,8 +122,8 @@
   --secondary: var(--surface-2);
   --secondary-foreground: var(--foreground);
   --muted: var(--surface-2);
-  --accent: var(--lavender);
-  --accent-foreground: oklch(0.45 0.19 292);
+  --accent: var(--rose);
+  --accent-foreground: var(--brand);
   --destructive: oklch(0.6 0.2 25);
   --destructive-foreground: oklch(1 0 0);
   --input: var(--border-strong);
@@ -144,14 +147,14 @@
   /* Elevation — kept quiet on purpose */
   --elevation-soft: 0 1px 2px color-mix(in oklab, var(--foreground) 5%, transparent);
   --elevation-card: 0 1px 2px color-mix(in oklab, var(--foreground) 4%, transparent),
-    0 8px 24px -12px color-mix(in oklab, var(--primary) 18%, transparent);
+    0 8px 24px -12px color-mix(in oklab, var(--foreground) 12%, transparent);
   --elevation-lift: 0 2px 4px color-mix(in oklab, var(--foreground) 4%, transparent),
-    0 18px 40px -18px color-mix(in oklab, var(--primary) 32%, transparent);
+    0 18px 40px -18px color-mix(in oklab, var(--brand) 22%, transparent);
 
   --gradient-hero: linear-gradient(
     135deg,
     var(--surface-2) 0%,
-    color-mix(in oklab, var(--lavender) 70%, var(--surface)) 100%
+    color-mix(in oklab, var(--rose) 70%, var(--surface)) 100%
   );
 }
 
@@ -177,7 +180,7 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 
   :focus-visible {
@@ -203,7 +206,7 @@
 /* Faint dotted grid used behind illustrations and empty states */
 @utility bg-dots {
   background-image: radial-gradient(
-    color-mix(in oklab, var(--primary) 16%, transparent) 1px,
+    color-mix(in oklab, var(--brand) 12%, transparent) 1px,
     transparent 1.2px
   );
   background-size: 18px 18px;

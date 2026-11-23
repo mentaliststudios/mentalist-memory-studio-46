@@ -36,7 +36,7 @@ const steps: { title: string; description: string; icon: typeof MapPin; accent: 
     title: "Choose a place",
     description: "Somewhere you can picture with your eyes closed — your home is perfect.",
     icon: MapPin,
-    accent: "violet",
+    accent: "brand",
   },
   {
     title: "Walk a route",

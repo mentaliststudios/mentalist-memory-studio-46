@@ -2,7 +2,7 @@
  * Accent palette used to give sections a distinct but consistent identity.
  * Class strings are literal so Tailwind can see them.
  */
-export type Accent = "violet" | "mint" | "sun" | "blush";
+export type Accent = "brand" | "mint" | "sun" | "blush";
 
 export const accentStyles: Record<
   Accent,
@@ -15,11 +15,11 @@ export const accentStyles: Record<
     badge: "soft" | "mint" | "sun" | "blush";
   }
 > = {
-  violet: {
+  brand: {
     icon: "bg-accent text-accent-foreground",
     soft: "bg-surface-2",
     text: "text-accent-foreground",
-    border: "border-lavender",
+    border: "border-rose",
     dot: "bg-primary",
     badge: "soft",
   },

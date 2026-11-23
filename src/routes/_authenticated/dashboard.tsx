@@ -55,7 +55,7 @@ const firstSteps: {
     title: "Understand the Method of Loci",
     description: "A two-minute idea that changes how you remember.",
     to: "/techniques",
-    accent: "violet",
+    accent: "brand",
   },
   {
     title: "Sketch your first Memory Palace",
@@ -77,7 +77,7 @@ function DashboardPage() {
       {/* Welcome */}
       <section
         aria-labelledby="welcome-title"
-        className="relative animate-rise overflow-hidden rounded-3xl border border-lavender bg-hero"
+        className="relative animate-rise overflow-hidden rounded-3xl border border-rose bg-hero"
       >
         <div className="pointer-events-none absolute inset-0 bg-dots opacity-50" />
         <div className="relative grid items-center gap-2 md:grid-cols-[1.15fr_1fr]">
@@ -127,7 +127,7 @@ function DashboardPage() {
             icon={Castle}
             title="Create a Memory Palace"
             description="Turn a familiar place into storage for anything."
-            accent="violet"
+            accent="brand"
           />
           <QuickAction
             to="/training"
@@ -202,7 +202,7 @@ function DashboardPage() {
               icon={Play}
               label="Sessions"
               hint="Shows after your first session"
-              accent="violet"
+              accent="brand"
             />
             <StatPlaceholder
               icon={RotateCcw}
