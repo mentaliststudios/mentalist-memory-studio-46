@@ -6,7 +6,12 @@ import { cn } from "@/lib/utils";
 interface StatPlaceholderProps {
   icon: LucideIcon;
   label: string;
+  /** Shown under the dash while there is no data yet. */
   hint: string;
+  /** Real figure from saved data; `null`/omitted keeps the tile honestly empty. */
+  value?: string | null;
+  /** Shown under the value when there is one. */
+  valueHint?: string;
   accent?: Accent;
   className?: string;
 }
@@ -16,9 +21,12 @@ export function StatPlaceholder({
   icon: Icon,
   label,
   hint,
+  value = null,
+  valueHint,
   accent = "brand",
   className,
 }: StatPlaceholderProps) {
+  const hasValue = value !== null;
   return (
     <div className={cn("panel flex flex-col gap-3 p-4", className)}>
       <div className="flex items-center gap-2.5">
@@ -31,12 +39,17 @@ export function StatPlaceholder({
       </div>
       <div>
         <p
-          className="font-display text-3xl font-extrabold text-border-strong"
-          aria-label={`${label}: no data yet`}
+          className={cn(
+            "font-display text-3xl font-extrabold",
+            hasValue ? "text-foreground" : "text-border-strong",
+          )}
+          aria-label={hasValue ? `${label}: ${value}` : `${label}: no data yet`}
         >
-          —
+          {hasValue ? value : "—"}
         </p>
-        <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{hint}</p>
+        <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
+          {hasValue ? (valueHint ?? hint) : hint}
+        </p>
       </div>
     </div>
   );

@@ -15,6 +15,13 @@
       "when": 1795200061221,
       "tag": "0001_auth_profile_creation",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795480643934,
+      "tag": "0002_tighten_privileges_and_validation",
+      "breakpoints": true
     }
   ]
 }

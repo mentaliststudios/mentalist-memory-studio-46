@@ -18,6 +18,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated/assistant'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedMemoryPalaceRouteImport } from './routes/_authenticated/memory-palace'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedProgressRouteImport } from './routes/_authenticated/progress'
 import { Route as AuthenticatedTechniquesRouteImport } from './routes/_authenticated/techniques'
 import { Route as AuthenticatedTrainingRouteImport } from './routes/_authenticated/training'
@@ -67,6 +68,11 @@ const AuthenticatedMemoryPalaceRoute =
     path: '/memory-palace',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProgressRoute = AuthenticatedProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AuthenticatedAssistantRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/memory-palace': typeof AuthenticatedMemoryPalaceRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/techniques': typeof AuthenticatedTechniquesRoute
   '/training': typeof AuthenticatedTrainingRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/assistant': typeof AuthenticatedAssistantRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/memory-palace': typeof AuthenticatedMemoryPalaceRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/progress': typeof AuthenticatedProgressRoute
   '/techniques': typeof AuthenticatedTechniquesRoute
   '/training': typeof AuthenticatedTrainingRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/_authenticated/assistant': typeof AuthenticatedAssistantRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/memory-palace': typeof AuthenticatedMemoryPalaceRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/progress': typeof AuthenticatedProgressRoute
   '/_authenticated/techniques': typeof AuthenticatedTechniquesRoute
   '/_authenticated/training': typeof AuthenticatedTrainingRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/dashboard'
     | '/memory-palace'
+    | '/profile'
     | '/progress'
     | '/techniques'
     | '/training'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/dashboard'
     | '/memory-palace'
+    | '/profile'
     | '/progress'
     | '/techniques'
     | '/training'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/_authenticated/assistant'
     | '/_authenticated/dashboard'
     | '/_authenticated/memory-palace'
+    | '/_authenticated/profile'
     | '/_authenticated/progress'
     | '/_authenticated/techniques'
     | '/_authenticated/training'
@@ -241,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMemoryPalaceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/progress': {
       id: '/_authenticated/progress'
       path: '/progress'
@@ -269,6 +288,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMemoryPalaceRoute: typeof AuthenticatedMemoryPalaceRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedProgressRoute: typeof AuthenticatedProgressRoute
   AuthenticatedTechniquesRoute: typeof AuthenticatedTechniquesRoute
   AuthenticatedTrainingRoute: typeof AuthenticatedTrainingRoute
@@ -278,6 +298,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAssistantRoute: AuthenticatedAssistantRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMemoryPalaceRoute: AuthenticatedMemoryPalaceRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedProgressRoute: AuthenticatedProgressRoute,
   AuthenticatedTechniquesRoute: AuthenticatedTechniquesRoute,
   AuthenticatedTrainingRoute: AuthenticatedTrainingRoute,

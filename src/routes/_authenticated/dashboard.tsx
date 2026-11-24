@@ -1,7 +1,10 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import {
   ArrowRight,
   Castle,
+  CircleCheck,
   Clock,
   Flame,
   Lightbulb,
@@ -13,6 +16,7 @@ import {
 
 import heroPalace from "@/assets/hero-palace.webp";
 import { EmptyState } from "@/components/common/EmptyState";
+import { PageError, PageLoading } from "@/components/common/PageStatus";
 import { ProgressIndicator } from "@/components/common/ProgressIndicator";
 import { QuickAction } from "@/components/common/QuickAction";
 import { SectionHeader } from "@/components/common/SectionHeader";
@@ -20,7 +24,13 @@ import { StatPlaceholder } from "@/components/common/StatPlaceholder";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { NavigationPath } from "@/config/navigation";
+import { trainingCategories } from "@/config/training";
 import { accentStyles, type Accent } from "@/lib/accents";
+import { useSessionUser } from "@/lib/auth/use-session-user";
+import { activityQuery, type ActivitySnapshot } from "@/lib/data/activity";
+import { myProfileQuery } from "@/lib/data/profile";
+import { formatDuration, formatShortDate, pluralize, weekKeys } from "@/lib/data/stats";
+import { summarizePractice } from "@/lib/data/summary";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -40,10 +50,40 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       },
     ],
   }),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(myProfileQuery(context.user.id)),
+      context.queryClient.ensureQueryData(activityQuery(context.user.id)),
+    ]),
+  pendingComponent: PageLoading,
+  errorComponent: PageError,
   component: DashboardPage,
 });
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+interface ActivityEntry {
+  id: string;
+  kind: "session" | "palace";
+  title: string;
+  at: string;
+}
+
+function recentEntries(snapshot: ActivitySnapshot): ActivityEntry[] {
+  const sessions = snapshot.sessions.slice(0, 5).map<ActivityEntry>((s) => ({
+    id: `s-${s.id}`,
+    kind: "session",
+    title: `Finished ${trainingCategories.find((c) => c.id === s.activity_key)?.name ?? "a training session"}`,
+    at: s.completed_at,
+  }));
+  const palaces = snapshot.recentPalaces.map<ActivityEntry>((p) => ({
+    id: `p-${p.id}`,
+    kind: "palace",
+    title: `Created “${p.name}”`,
+    at: p.created_at,
+  }));
+  return [...sessions, ...palaces].sort((a, b) => b.at.localeCompare(a.at)).slice(0, 5);
+}
 
 const firstSteps: {
   title: string;
@@ -72,6 +112,16 @@ const firstSteps: {
 ];
 
 function DashboardPage() {
+  const user = useSessionUser();
+  const { data: profile } = useSuspenseQuery(myProfileQuery(user.id));
+  const { data: activity } = useSuspenseQuery(activityQuery(user.id));
+  const timeZone = profile?.timezone ?? "UTC";
+  const summary = useMemo(() => summarizePractice(activity, timeZone), [activity, timeZone]);
+  const week = weekKeys(summary.today);
+  const entries = recentEntries(activity);
+  const firstName = profile?.display_name?.trim().split(/\s+/)[0] ?? null;
+  const hasSessions = summary.sessionCount > 0;
+
   return (
     <div className="space-y-10 md:space-y-12">
       {/* Welcome */}
@@ -83,7 +133,7 @@ function DashboardPage() {
         <div className="relative grid items-center gap-2 md:grid-cols-[1.15fr_1fr]">
           <div className="order-2 p-6 pt-0 md:order-1 md:p-10 md:pr-0">
             <Badge variant="outline" className="bg-card/70">
-              <Sprout aria-hidden="true" /> Welcome back
+              <Sprout aria-hidden="true" /> Welcome back{firstName ? `, ${firstName}` : ""}
             </Badge>
             <h1
               id="welcome-title"
@@ -174,22 +224,47 @@ function DashboardPage() {
           </div>
 
           <ol className="mt-6 grid grid-cols-7 gap-1.5 sm:gap-3" aria-label="This week's practice">
-            {weekDays.map((day) => (
-              <li key={day} className="flex flex-col items-center gap-2">
-                <span
-                  className="grid aspect-square w-full max-w-12 place-items-center rounded-xl border-2 border-dashed border-border bg-background"
-                  aria-label={`${day}: no practice recorded`}
-                >
-                  <Flame className="size-4 text-border-strong" aria-hidden="true" />
-                </span>
-                <span className="text-[11px] font-bold text-muted-foreground">{day}</span>
-              </li>
-            ))}
+            {weekDays.map((day, index) => {
+              const key = week[index] ?? "";
+              const count = summary.practiceDays.get(key) ?? 0;
+              const isToday = key === summary.today;
+              return (
+                <li key={day} className="flex flex-col items-center gap-2">
+                  <span
+                    className={cn(
+                      "grid aspect-square w-full max-w-12 place-items-center rounded-xl border-2",
+                      count
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-dashed border-border bg-background",
+                      isToday && !count && "border-primary/50",
+                    )}
+                    aria-label={`${day}${isToday ? " (today)" : ""}: ${
+                      count ? pluralize(count, "session") : "no practice recorded"
+                    }`}
+                  >
+                    <Flame
+                      className={cn("size-4", count ? "" : "text-border-strong")}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span
+                    className={cn(
+                      "text-[11px] font-bold",
+                      isToday ? "text-primary" : "text-muted-foreground",
+                    )}
+                  >
+                    {day}
+                  </span>
+                </li>
+              );
+            })}
           </ol>
 
           <p className="mt-5 flex items-center gap-2 rounded-xl bg-surface-2 px-3 py-2.5 text-[13px] text-muted-foreground">
             <Sprout className="size-4 shrink-0 text-primary" aria-hidden="true" />
-            Daily goals and streaks will start counting once you save your practice.
+            {hasSessions
+              ? "Days light up when you finish a training session."
+              : "Daily goals and streaks will start counting once you save your practice."}
           </p>
         </section>
 
@@ -202,24 +277,32 @@ function DashboardPage() {
               icon={Play}
               label="Sessions"
               hint="Shows after your first session"
+              value={hasSessions ? String(summary.sessionCount) : null}
+              valueHint="Completed sessions"
               accent="brand"
             />
             <StatPlaceholder
               icon={RotateCcw}
               label="Reviews"
               hint="Items due for review appear here"
+              value={activity.scheduledItemCount ? String(activity.reviewsDue) : null}
+              valueHint="Due now"
               accent="mint"
             />
             <StatPlaceholder
               icon={Clock}
               label="Training time"
               hint="Tracked while you train"
+              value={summary.totalSeconds > 0 ? formatDuration(summary.totalSeconds) : null}
+              valueHint="All completed sessions"
               accent="sun"
             />
             <StatPlaceholder
               icon={Flame}
               label="Streak"
               hint="Begins with day one"
+              value={hasSessions ? pluralize(summary.currentStreak, "day") : null}
+              valueHint={`Best: ${pluralize(summary.longestStreak, "day")}`}
               accent="blush"
             />
           </div>
@@ -272,17 +355,44 @@ function DashboardPage() {
 
         <section aria-labelledby="recent-activity" className="lg:col-span-2">
           <SectionHeader id="recent-activity" title="Recent activity" />
-          <EmptyState
-            icon={Sprout}
-            accent="mint"
-            title="No memories created yet."
-            description="Start your first practice session and your journey will appear here."
-            action={
-              <Button asChild variant="soft">
-                <Link to="/training">Start practicing</Link>
-              </Button>
-            }
-          />
+          {entries.length ? (
+            <ul className="panel divide-y divide-border p-2">
+              {entries.map((entry) => (
+                <li key={entry.id} className="flex items-center gap-3 p-3">
+                  <span
+                    className={cn(
+                      "grid size-9 shrink-0 place-items-center rounded-xl",
+                      accentStyles[entry.kind === "palace" ? "brand" : "mint"].icon,
+                    )}
+                  >
+                    {entry.kind === "palace" ? (
+                      <Castle className="size-4" aria-hidden="true" />
+                    ) : (
+                      <CircleCheck className="size-4" aria-hidden="true" />
+                    )}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-bold text-foreground">
+                    {entry.title}
+                  </span>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {formatShortDate(entry.at, timeZone)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState
+              icon={Sprout}
+              accent="mint"
+              title="No memories created yet."
+              description="Start your first practice session and your journey will appear here."
+              action={
+                <Button asChild variant="soft">
+                  <Link to="/training">Start practicing</Link>
+                </Button>
+              }
+            />
+          )}
         </section>
       </div>
     </div>

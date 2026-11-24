@@ -1,14 +1,21 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Castle, Footprints, MapPin, Plus, Sparkles } from "lucide-react";
-import { toast } from "sonner";
+import { Castle, Footprints, Info, MapPin, Plus, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 import { EmptyState } from "@/components/common/EmptyState";
 import { IllustrationContainer } from "@/components/common/IllustrationContainer";
 import { PageHeader } from "@/components/common/PageHeader";
+import { PageError, PageLoading } from "@/components/common/PageStatus";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { Badge } from "@/components/ui/badge";
+import { PalaceCard } from "@/components/palace/PalaceCard";
+import { PalaceFormDialog, type PalaceDialogState } from "@/components/palace/PalaceFormDialog";
 import { Button } from "@/components/ui/button";
 import { futurePalaceTemplates, palaceEnvironments } from "@/config/palace";
+import { useSessionUser } from "@/lib/auth/use-session-user";
+import { palacesQuery } from "@/lib/data/palaces";
+import { myProfileQuery } from "@/lib/data/profile";
 import { accentStyles, type Accent } from "@/lib/accents";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +35,13 @@ export const Route = createFileRoute("/_authenticated/memory-palace")({
       },
     ],
   }),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(palacesQuery(context.user.id)),
+      context.queryClient.ensureQueryData(myProfileQuery(context.user.id)),
+    ]),
+  pendingComponent: PageLoading,
+  errorComponent: PageError,
   component: MemoryPalacePage,
 });
 
@@ -52,13 +66,14 @@ const steps: { title: string; description: string; icon: typeof MapPin; accent: 
   },
 ];
 
-function announceBuilder() {
-  toast("The palace builder is on its way", {
-    description: "Creating and saving palaces arrives in the next phase.",
-  });
-}
-
 function MemoryPalacePage() {
+  const user = useSessionUser();
+  const { data: palaces } = useSuspenseQuery(palacesQuery(user.id));
+  const { data: profile } = useSuspenseQuery(myProfileQuery(user.id));
+  const timeZone = profile?.timezone ?? "UTC";
+  const [dialog, setDialog] = useState<PalaceDialogState | null>(null);
+  const openCreate = () => setDialog({ mode: "create" });
+
   return (
     <div className="space-y-10 md:space-y-12">
       <PageHeader
@@ -67,7 +82,7 @@ function MemoryPalacePage() {
         icon={Castle}
         description="Your mind remembers places remarkably well. Turn familiar spaces into storage for anything you want to keep."
         actions={
-          <Button size="lg" onClick={announceBuilder}>
+          <Button size="lg" onClick={openCreate}>
             <Plus aria-hidden="true" /> Create palace
           </Button>
         }
@@ -115,17 +130,46 @@ function MemoryPalacePage() {
 
       {/* Your palaces */}
       <section aria-labelledby="your-palaces">
-        <SectionHeader id="your-palaces" title="Your palaces" />
-        <EmptyState
-          icon={Castle}
-          title="No palaces yet"
-          description="Pick a place you know by heart, plan a route, and your first palace will live here."
-          action={
-            <Button onClick={announceBuilder}>
-              <Plus aria-hidden="true" /> Create your first palace
-            </Button>
+        <SectionHeader
+          id="your-palaces"
+          title="Your palaces"
+          description={
+            palaces.length
+              ? `${palaces.length} saved to your account`
+              : undefined
           }
         />
+        {palaces.length ? (
+          <>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {palaces.map((palace) => (
+                <li key={palace.id}>
+                  <PalaceCard
+                    palace={palace}
+                    userId={user.id}
+                    timeZone={timeZone}
+                    onEdit={(p) => setDialog({ mode: "edit", palace: p })}
+                  />
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 flex items-center gap-2 rounded-xl bg-surface-2 px-3 py-2.5 text-[13px] text-muted-foreground">
+              <Info className="size-4 shrink-0 text-primary" aria-hidden="true" />
+              Adding rooms and stops to a palace is coming next.
+            </p>
+          </>
+        ) : (
+          <EmptyState
+            icon={Castle}
+            title="No palaces yet"
+            description="Pick a place you know by heart, plan a route, and your first palace will live here."
+            action={
+              <Button onClick={openCreate}>
+                <Plus aria-hidden="true" /> Create your first palace
+              </Button>
+            }
+          />
+        )}
       </section>
 
       {/* Environments */}
@@ -149,11 +193,21 @@ function MemoryPalacePage() {
                 <div className="flex flex-1 flex-col p-3 pt-4">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="text-lg font-extrabold text-foreground">{env.name}</h3>
-                    <Badge variant="outline">Template · soon</Badge>
+                    <Badge variant="outline">Ready-made rooms · soon</Badge>
                   </div>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     {env.greatFor}
                   </p>
+                  <Button
+                    variant="soft"
+                    size="sm"
+                    className="mt-3 self-start"
+                    onClick={() =>
+                      setDialog({ mode: "create", name: env.name, templateKey: env.id })
+                    }
+                  >
+                    <Plus aria-hidden="true" /> Use this place
+                  </Button>
                 </div>
               </article>
             </li>
@@ -184,6 +238,8 @@ function MemoryPalacePage() {
           </ul>
         </div>
       </section>
+
+      <PalaceFormDialog userId={user.id} state={dialog} onClose={() => setDialog(null)} />
     </div>
   );
 }

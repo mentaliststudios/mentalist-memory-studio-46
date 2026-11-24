@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ChevronsUpDown, LogOut, UserRound } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -12,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import { myProfileQuery } from "@/lib/auth/profile";
+import { myProfileQuery } from "@/lib/data/profile";
 import { cn } from "@/lib/utils";
 
 interface AccountMenuProps {
@@ -86,6 +87,12 @@ export function AccountMenu({ variant }: AccountMenuProps) {
           <span className="block truncate text-xs text-muted-foreground">{email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild className="cursor-pointer gap-2 font-semibold">
+          <Link to="/profile">
+            <UserRound className="size-4" aria-hidden="true" />
+            Profile & settings
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           disabled={signingOut}
           onSelect={(event) => {
