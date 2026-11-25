@@ -17,7 +17,11 @@ export function isValidTimeZone(value: string): boolean {
 }
 
 // Strip control characters so names render safely everywhere.
-const cleanText = (v: string) => [...v].filter((ch) => ch.charCodeAt(0) >= 32 || ch === "\n").join("").trim();
+const cleanText = (v: string) =>
+  [...v]
+    .filter((ch) => ch.charCodeAt(0) >= 32 || ch === "\n")
+    .join("")
+    .trim();
 
 export const profileSchema = z.object({
   displayName: z

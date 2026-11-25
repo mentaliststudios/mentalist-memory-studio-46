@@ -1,11 +1,5 @@
 import type { ActivitySnapshot } from "./activity";
-import {
-  accuracyByActivity,
-  currentStreak,
-  dayKey,
-  longestStreak,
-  type DayKey,
-} from "./stats";
+import { accuracyByActivity, currentStreak, dayKey, longestStreak, type DayKey } from "./stats";
 
 export interface PracticeSummary {
   today: DayKey;

@@ -133,11 +133,7 @@ function MemoryPalacePage() {
         <SectionHeader
           id="your-palaces"
           title="Your palaces"
-          description={
-            palaces.length
-              ? `${palaces.length} saved to your account`
-              : undefined
-          }
+          description={palaces.length ? `${palaces.length} saved to your account` : undefined}
         />
         {palaces.length ? (
           <>

@@ -215,8 +215,8 @@ function ProfileForm({ profile, email }: { profile: MyProfile; email: string }) 
           </div>
         </dl>
         <p className="rounded-xl bg-surface-2 px-3 py-2.5 text-[13px] text-muted-foreground">
-          Changing your email isn't available yet. To change your password, sign out and use
-          "Forgot password?" on the sign-in page.
+          Changing your email isn't available yet. To change your password, sign out and use "Forgot
+          password?" on the sign-in page.
         </p>
       </section>
     </div>

@@ -100,7 +100,10 @@ export function PalaceCard({ palace, userId, timeZone, onEdit }: PalaceCardProps
         {template ? <Badge variant="soft">{template.name}</Badge> : null}
       </div>
 
-      <AlertDialog open={confirming} onOpenChange={(open) => !remove.isPending && setConfirming(open)}>
+      <AlertDialog
+        open={confirming}
+        onOpenChange={(open) => !remove.isPending && setConfirming(open)}
+      >
         <AlertDialogContent className="rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Delete “{palace.name}”?</AlertDialogTitle>
